@@ -21,6 +21,30 @@ function App() {
       })
   }
 
+  const takePhoto = () => {
+    const width = 414;
+    // es igual a 1920 * 1080
+    const height = width / (16 / 9)
+
+    let video = videoRef.current;
+    let photo = photoRef.current
+
+    photo.width = width
+    photo.height = height
+
+    //tomar una foto 
+    let ctx = photo.getContext('2d')
+    ctx.drawImage(video, 0, 0, width, height)
+    setHasPhoto(true)
+  }
+
+  const closePhoto = () => {
+    let photo = photoRef.current
+    let ctx = photo.getContext('2d')
+
+    ctx.clearRect(0, 0, photo.width, photo.height)
+    setHasPhoto(false)
+  }
   useEffect(() => {
     getVideo()
     // el efecto es activado si los valores cambian
@@ -29,11 +53,11 @@ function App() {
     <div className="App">
       <div className="camera">
         <video ref={videoRef}></video>
-        <button>SNAP!</button>
+        <button onClick={takePhoto}>SNAP!</button>
       </div>
-      <div className={'result' + (hasPhoto ? 'hasPhoto' : '')}>
+      <div className={'result ' + (hasPhoto ? 'hasPhoto' : '')}>
         <canvas ref={photoRef}></canvas>
-        <button>Close</button>
+        <button onClick={closePhoto}>Close</button>
 
       </div>
     </div>
